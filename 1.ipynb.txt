@@ -1,0 +1,253 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    },
+    "accelerator": "GPU",
+    "gpuClass": "standard"
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8S9DWQy93-KW",
+        "outputId": "09790fb1-8bbf-488d-c208-49d49ce7b927"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package omw-1.4 to /root/nltk_data...\n",
+            "[nltk_data]   Package omw-1.4 is already up-to-date!\n"
+          ]
+        }
+      ],
+      "source": [
+        "import nltk\n",
+        "from nltk.tokenize import *\n",
+        "from nltk.stem import PorterStemmer, SnowballStemmer, WordNetLemmatizer\n",
+        "\n",
+        "nltk.download('omw-1.4')\n",
+        "# input text\n",
+        "text = \"The quick brown fox jumps over the lazy dog.\""
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# whitespace tokenization\n",
+        "whitespace_tokens = WhitespaceTokenizer().tokenize(text)\n",
+        "print(\"Whitespace        Tokenization :\", whitespace_tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vrGw9X4O7a3u",
+        "outputId": "e260d3a6-2ced-42b2-de3a-4a5d6b8385da"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Whitespace        Tokenization : ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# punctuation-based tokenization\n",
+        "punct_tokens = word_tokenize(text)\n",
+        "print(\"Punctuation-based Tokenization :\", punct_tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "MBsM0ahg7e8s",
+        "outputId": "3f3bfa89-ca7e-46c3-a1ea-c52b7fc8825d"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Punctuation-based Tokenization : ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog', '.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Treebank tokenization\n",
+        "treebank_tokens = TreebankWordTokenizer().tokenize(text)\n",
+        "print(\"Treebank          Tokenization :\", treebank_tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "va0GbLxN7ivm",
+        "outputId": "f9645d1e-b715-4aca-885e-a8c820c67120"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Treebank          Tokenization : ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog', '.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Tweet tokenization\n",
+        "tweet_tokens = TweetTokenizer().tokenize(text)\n",
+        "print(\"Tweet             Tokenization :\", tweet_tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Pm0K3Z6O7my_",
+        "outputId": "c9e2c6da-b212-4d34-8fcb-4a1c9bd2414a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Tweet             Tokenization : ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog', '.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# MWE tokenization\n",
+        "mwe_tokens = MWETokenizer().tokenize(text.split())\n",
+        "print(\"MWE               Tokenization :\", mwe_tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GxDg9rtC7qMD",
+        "outputId": "68eb564e-111a-4ee4-f556-3932e4f3925a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "MWE               Tokenization : ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# stemming using Porter Stemmer\n",
+        "porter = PorterStemmer()\n",
+        "porter_stems = [porter.stem(token) for token in punct_tokens]\n",
+        "print(\"Porter   Stemmer :\", porter_stems)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7vQJmp0D7th8",
+        "outputId": "4c715635-76b5-4592-e677-11dd0110195f"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Porter   Stemmer : ['the', 'quick', 'brown', 'fox', 'jump', 'over', 'the', 'lazi', 'dog', '.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# stemming using Snowball Stemmer\n",
+        "snowball = SnowballStemmer(\"english\")\n",
+        "snowball_stems = [snowball.stem(token) for token in punct_tokens]\n",
+        "print(\"Snowball Stemmer :\", snowball_stems)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GwbT4cj17wVC",
+        "outputId": "0783343a-f283-4d4b-c84a-93696d1c14f5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Snowball Stemmer : ['the', 'quick', 'brown', 'fox', 'jump', 'over', 'the', 'lazi', 'dog', '.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# lemmatization using WordNetLemmatizer\n",
+        "lemmatizer = WordNetLemmatizer()\n",
+        "lemmas = [lemmatizer.lemmatize(token) for token in punct_tokens]\n",
+        "print(\"Lemmatization :\", lemmas)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-g6qPQKT7yuu",
+        "outputId": "24516cbb-2b29-4194-984e-0b90ea63d1ed"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Lemmatization : ['The', 'quick', 'brown', 'fox', 'jump', 'over', 'the', 'lazy', 'dog', '.']\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
